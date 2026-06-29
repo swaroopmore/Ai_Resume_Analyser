@@ -4,6 +4,7 @@ import shutil
 
 from app.services.document_loader import DocumentLoaderService
 from app.services.text_splitter import TextSplitterService
+from app.services.vector_store_service import VectorStoreService
 
 router = APIRouter(
     prefix="/resume",
@@ -16,29 +17,28 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 
 @router.post("/upload")
 async def upload_resume(file: UploadFile = File(...)):
-    # Create the path where the uploaded file will be stored
     file_path = UPLOAD_DIR / file.filename
 
-    # Save the uploaded PDF
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    # Load the PDF using LangChain
     documents = DocumentLoaderService.load_pdf(str(file_path))
 
-    # Split the documents into chunks
     chunks = TextSplitterService.split_documents(documents)
 
-    # Print information in the terminal
+    vector_store = VectorStoreService.add_documents(chunks)
+
     print("=" * 60)
     print(f"Resume Uploaded : {file.filename}")
-    print(f"Number of Pages : {len(documents)}")
-    print(f"Number of Chunks: {len(chunks)}")
+    print(f"Pages           : {len(documents)}")
+    print(f"Chunks          : {len(chunks)}")
+    print("Vector Store    : Created Successfully")
     print("=" * 60)
 
     return {
         "message": "Resume uploaded successfully",
         "filename": file.filename,
         "pages": len(documents),
-        "chunks": len(chunks)
+        "chunks": len(chunks),
+        "status": "Vector Store Created"
     }
