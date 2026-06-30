@@ -1,0 +1,67 @@
+.dashboard{
+
+max-width:1200px;
+
+margin:70px auto;
+
+padding:0 20px;
+
+}
+
+.dashboard-card{
+
+background:linear-gradient(135deg,#2563eb,#7c3aed);
+
+color:white;
+
+padding:60px;
+
+border-radius:30px;
+
+box-shadow:0 30px 70px rgba(37,99,235,.25);
+
+text-align:center;
+
+}
+
+.status{
+
+display:inline-block;
+
+padding:10px 20px;
+
+border-radius:50px;
+
+background:rgba(255,255,255,.18);
+
+backdrop-filter:blur(10px);
+
+font-weight:600;
+
+margin-bottom:25px;
+
+}
+
+.dashboard-card h1{
+
+font-size:52px;
+
+font-weight:800;
+
+margin-bottom:20px;
+
+}
+
+.dashboard-card p{
+
+font-size:20px;
+
+line-height:1.9;
+
+opacity:.95;
+
+max-width:850px;
+
+margin:auto;
+
+}

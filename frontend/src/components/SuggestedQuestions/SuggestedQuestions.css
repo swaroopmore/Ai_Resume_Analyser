@@ -1,0 +1,55 @@
+.suggested{
+
+margin-top:35px;
+
+}
+
+.suggested h3{
+
+font-size:20px;
+
+margin-bottom:15px;
+
+color:#334155;
+
+}
+
+.chips{
+
+display:flex;
+
+flex-wrap:wrap;
+
+gap:12px;
+
+}
+
+.chips button{
+
+padding:12px 18px;
+
+border:none;
+
+border-radius:30px;
+
+background:white;
+
+cursor:pointer;
+
+font-size:15px;
+
+box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+transition:.25s;
+
+}
+
+.chips button:hover{
+
+background:linear-gradient(135deg,#2563eb,#7c3aed);
+
+color:white;
+
+transform:translateY(-3px);
+
+}
