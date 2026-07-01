@@ -3,7 +3,7 @@ import { UploadCloud, FileText, ShieldCheck, CheckCircle2 } from "lucide-react";
 import API from "../../services/api";
 import "./UploadResume.css";
 
-export default function UploadResume() {
+export default function UploadResume({ onUploadSuccess })  {
 
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -25,14 +25,18 @@ export default function UploadResume() {
 
         setLoading(true);
 
-        const response = await API.post("/resume/upload", formData);
+        const response = await API.post(
+    "/resume/upload",
+    formData
+);
 
-        console.log("Response:", response);
+setUploaded(true);
 
-        setUploaded(true);
+if (onUploadSuccess) {
 
-        console.log("uploaded state set");
+    onUploadSuccess(response.data);
 
+}
     } catch (error) {
 
         console.log("ERROR:", error);

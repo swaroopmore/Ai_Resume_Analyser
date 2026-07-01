@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 
-from app.services import resume_context
-from app.services.resume_analyzer import ResumeAnalyzer
+from app.services import analysis_storage
 
 router = APIRouter(
     prefix="/dashboard",
@@ -9,14 +8,17 @@ router = APIRouter(
 )
 
 
+@router.get("/")
+def dashboard():
+
+    return analysis_storage.analysis_data
+
+
 @router.get("/summary")
 def summary():
 
     return {
-        "summary":
-        ResumeAnalyzer.generate_summary(
-            resume_context.resume_context
-        )
+        "summary": analysis_storage.analysis_data.get("summary")
     }
 
 
@@ -24,10 +26,7 @@ def summary():
 def skills():
 
     return {
-        "skills":
-        ResumeAnalyzer.generate_skills(
-            resume_context.resume_context
-        )
+        "skills": analysis_storage.analysis_data.get("skills")
     }
 
 
@@ -35,10 +34,7 @@ def skills():
 def ats():
 
     return {
-        "ats":
-        ResumeAnalyzer.generate_ats(
-            resume_context.resume_context
-        )
+        "ats_score": analysis_storage.analysis_data.get("ats_score")
     }
 
 
@@ -46,10 +42,7 @@ def ats():
 def projects():
 
     return {
-        "projects":
-        ResumeAnalyzer.generate_projects(
-            resume_context.resume_context
-        )
+        "projects": analysis_storage.analysis_data.get("projects")
     }
 
 
@@ -57,10 +50,7 @@ def projects():
 def experience():
 
     return {
-        "experience":
-        ResumeAnalyzer.generate_experience(
-            resume_context.resume_context
-        )
+        "experience": analysis_storage.analysis_data.get("experience")
     }
 
 
@@ -68,10 +58,7 @@ def experience():
 def strengths():
 
     return {
-        "strengths":
-        ResumeAnalyzer.generate_strengths(
-            resume_context.resume_context
-        )
+        "strengths": analysis_storage.analysis_data.get("strengths")
     }
 
 
@@ -79,10 +66,7 @@ def strengths():
 def weaknesses():
 
     return {
-        "weaknesses":
-        ResumeAnalyzer.generate_weaknesses(
-            resume_context.resume_context
-        )
+        "weaknesses": analysis_storage.analysis_data.get("weaknesses")
     }
 
 
@@ -90,10 +74,7 @@ def weaknesses():
 def suggestions():
 
     return {
-        "suggestions":
-        ResumeAnalyzer.generate_suggestions(
-            resume_context.resume_context
-        )
+        "suggestions": analysis_storage.analysis_data.get("suggestions")
     }
 
 
@@ -101,8 +82,5 @@ def suggestions():
 def interview():
 
     return {
-        "interview":
-        ResumeAnalyzer.generate_interview_questions(
-            resume_context.resume_context
-        )
+        "interview_questions": analysis_storage.analysis_data.get("interview_questions")
     }

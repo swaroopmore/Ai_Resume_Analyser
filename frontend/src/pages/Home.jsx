@@ -1,3 +1,6 @@
+import { useState } from "react";
+import axios from "axios";
+
 import Navbar from "../components/Navbar/Navbar";
 import UploadResume from "../components/UploadResume/UploadResume";
 import QuestionBox from "../components/QuestionBox/QuestionBox";
@@ -5,6 +8,26 @@ import Dashboard from "../components/Dashboard/Dashboard";
 import DashboardGrid from "../components/DashboardGrid/DashboardGrid";
 
 export default function Home() {
+
+    const [dashboardData, setDashboardData] = useState(null);
+
+    const loadDashboard = async () => {
+
+        try {
+
+            const response = await axios.get(
+                "http://127.0.0.1:8000/dashboard"
+            );
+
+            setDashboardData(response.data);
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    };
 
     return (
 
@@ -16,15 +39,18 @@ export default function Home() {
 
             <div className="absolute w-[500px] h-[500px] bg-cyan-300/20 blur-[170px] rounded-full left-1/3 bottom-0"></div>
 
-            <Navbar/>
+            <Navbar />
 
             <section className="relative z-10 mt-16 text-center">
 
                 <h1 className="text-7xl font-black text-slate-800">
 
                     Resume
+
                     <span className="bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
+
                         Pilot
+
                     </span>
 
                 </h1>
@@ -49,13 +75,32 @@ export default function Home() {
 
             </section>
 
-            <UploadResume/>
+            <UploadResume
+                onUploadSuccess={loadDashboard}
+            />
 
-            <QuestionBox/>
+            {
 
-            <Dashboard/>
+                dashboardData && (
 
-            <DashboardGrid/>
+                    <>
+
+                        <Dashboard
+                            dashboardData={dashboardData}
+                        />
+
+                        <QuestionBox />
+
+                        <DashboardGrid
+                            dashboardData={dashboardData}
+                        />
+
+                    </>
+
+                )
+
+            }
+
         </div>
 
     );

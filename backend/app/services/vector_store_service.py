@@ -10,10 +10,6 @@ class VectorStoreService:
 
     @staticmethod
     def get_vector_store():
-        """
-        Returns an existing Chroma vector store.
-        If it doesn't exist, Chroma automatically creates it.
-        """
 
         embedding_model = EmbeddingService.get_embedding_model()
 
@@ -26,12 +22,23 @@ class VectorStoreService:
         return vector_store
 
     @staticmethod
-    def add_documents(chunks):
-        """
-        Adds new chunks to the existing vector store.
-        """
+    def replace_documents(chunks):
 
         vector_store = VectorStoreService.get_vector_store()
+
+        try:
+
+            vector_store.delete_collection()
+
+        except Exception:
+
+            pass
+
+        vector_store = Chroma(
+            collection_name=VectorStoreService.COLLECTION_NAME,
+            embedding_function=EmbeddingService.get_embedding_model(),
+            persist_directory=VectorStoreService.PERSIST_DIRECTORY,
+        )
 
         vector_store.add_documents(chunks)
 

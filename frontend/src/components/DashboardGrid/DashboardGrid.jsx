@@ -1,6 +1,6 @@
 import {
-    FileText,
     Award,
+    FileText,
     Code,
     Briefcase,
     TrendingUp,
@@ -11,59 +11,63 @@ import {
 
 import "./DashboardGrid.css";
 
-const cards = [
+export default function DashboardGrid({ dashboardData }) {
 
-    {
-        title: "ATS Score",
-        icon: <Award size={28}/>,
-        text: "View ATS compatibility score."
-    },
+    if (!dashboardData) return null;
 
-    {
-        title: "Resume Summary",
-        icon: <FileText size={28}/>,
-        text: "AI generated resume summary."
-    },
+    const cards = [
 
-    {
-        title: "Skills Analysis",
-        icon: <Code size={28}/>,
-        text: "Technical & soft skills detected."
-    },
+        {
+            title: "ATS Score",
+            icon: <Award size={28}/>,
+            value: dashboardData.ats_score
+        },
 
-    {
-        title: "Experience",
-        icon: <Briefcase size={28}/>,
-        text: "Professional experience overview."
-    },
+        {
+            title: "Resume Summary",
+            icon: <FileText size={28}/>,
+            value: dashboardData.summary
+        },
 
-    {
-        title: "Strengths",
-        icon: <TrendingUp size={28}/>,
-        text: "Strong points identified by AI."
-    },
+        {
+            title: "Skills",
+            icon: <Code size={28}/>,
+            value: dashboardData.skills?.technical?.join(", ")
+        },
 
-    {
-        title: "Weaknesses",
-        icon: <TriangleAlert size={28}/>,
-        text: "Areas needing improvement."
-    },
+        {
+            title: "Experience",
+            icon: <Briefcase size={28}/>,
+            value: dashboardData.experience?.length + " Experience(s)"
+        },
 
-    {
-        title: "Suggestions",
-        icon: <Lightbulb size={28}/>,
-        text: "AI recommendations."
-    },
+        {
+            title: "Strengths",
+            icon: <TrendingUp size={28}/>,
+            value: dashboardData.strengths?.join(", ")
+        },
 
-    {
-        title: "Interview Questions",
-        icon: <MessageSquare size={28}/>,
-        text: "Questions based on your resume."
-    }
+        {
+            title: "Weaknesses",
+            icon: <TriangleAlert size={28}/>,
+            value: dashboardData.weaknesses?.join(", ")
+        },
 
-];
+        {
+            title: "Suggestions",
+            icon: <Lightbulb size={28}/>,
+            value: dashboardData.suggestions?.join(", ")
+        },
 
-export default function DashboardGrid() {
+        {
+            title: "Interview Questions",
+            icon: <MessageSquare size={28}/>,
+            value:
+                dashboardData.interview_questions?.technical?.length +
+                " Technical Questions"
+        }
+
+    ];
 
     return (
 
@@ -84,15 +88,17 @@ export default function DashboardGrid() {
 
                         </div>
 
-                        <h3>{card.title}</h3>
+                        <h3>
 
-                        <p>{card.text}</p>
+                            {card.title}
 
-                        <button>
+                        </h3>
 
-                            View Details
+                        <p>
 
-                        </button>
+                            {card.value || "No Data"}
+
+                        </p>
 
                     </div>
 

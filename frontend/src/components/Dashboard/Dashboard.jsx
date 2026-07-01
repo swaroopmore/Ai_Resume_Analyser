@@ -1,6 +1,8 @@
 import "./Dashborad.css";
 
-export default function Dashboard() {
+export default function Dashboard({ dashboardData }) {
+
+    if (!dashboardData) return null;
 
     return (
 
@@ -16,19 +18,59 @@ export default function Dashboard() {
 
                 <h1>
 
-                    Welcome to ResumePilot
+                    Welcome {dashboardData.candidate_name || "Candidate"} 👋
 
                 </h1>
 
                 <p>
 
-                    Your resume has been analyzed successfully.
+                    Your resume has been successfully analyzed by ResumePilot.
 
-                    Explore AI insights, improve your ATS score,
-                    identify missing skills and prepare confidently
-                    for your next interview.
+                    Explore your AI-powered insights, ATS score, extracted skills,
+                    projects, experience, strengths, weaknesses and personalized
+                    recommendations below.
 
                 </p>
+
+                <div className="dashboard-stats">
+
+                    <div className="stat-card">
+
+                        <h3>ATS Score</h3>
+
+                        <h2>
+
+                            {dashboardData.ats_score ?? "--"}
+
+                        </h2>
+
+                    </div>
+
+                    <div className="stat-card">
+
+                        <h3>Projects</h3>
+
+                        <h2>
+
+                            {dashboardData.projects?.length ?? 0}
+
+                        </h2>
+
+                    </div>
+
+                    <div className="stat-card">
+
+                        <h3>Experience</h3>
+
+                        <h2>
+
+                            {dashboardData.experience?.length ?? 0}
+
+                        </h2>
+
+                    </div>
+
+                </div>
 
             </div>
 
