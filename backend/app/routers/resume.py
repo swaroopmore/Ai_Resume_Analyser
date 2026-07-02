@@ -75,11 +75,12 @@ async def upload_resume(file: UploadFile = File(...)):
 @router.post("/ask")
 async def ask_question(request: QuestionRequest):
 
-    answer = RAGService.ask_question(
+    result = RAGService.ask_question(
         request.question
     )
 
     return {
         "question": request.question,
-        "answer": answer
+        "answer": result["answer"],
+        "sources": result["sources"]
     }

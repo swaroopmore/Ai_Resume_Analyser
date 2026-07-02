@@ -1,15 +1,66 @@
 @import "tailwindcss";
 
-html,
-body,
-#root {
-    width: 100%;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
+/* ---------- Light Theme ---------- */
+
+:root{
+
+    --bg:#eef4ff;
+
+    --surface:#ffffff;
+
+    --text:#0f172a;
+
+    --text-secondary:#64748b;
+
+    --border:#e2e8f0;
+
 }
 
-body {
-    font-family: Inter, Arial, sans-serif;
-    background: #eef4ff;
+/* ---------- Dark Theme ---------- */
+
+[data-theme="dark"]{
+
+    --bg:#0f172a;
+
+    --surface:#1e293b;
+
+    --text:#f8fafc;
+
+    --text-secondary:#94a3b8;
+
+    --border:#334155;
+
+}
+
+*{
+
+    transition:
+        background-color .3s ease,
+        color .3s ease,
+        border-color .3s ease;
+
+}
+
+html,
+body,
+#root{
+
+    width:100%;
+
+    min-height:100vh;
+
+    margin:0;
+
+    padding:0;
+
+}
+
+body{
+
+    font-family:Inter,Arial,sans-serif;
+
+    background:var(--bg);
+
+    color:var(--text);
+
 }

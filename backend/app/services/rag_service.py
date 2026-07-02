@@ -10,18 +10,25 @@ class RAGService:
     @staticmethod
     def ask_question(question: str):
 
-        retriever = RetrieverService.get_retriever()
-
         llm = ChatModelService.get_chat_model()
 
-        context_documents = retriever.invoke(question)
+        # Retrieve similar chunks with scores
+        results = RetrieverService.similarity_search(
+            question,
+            k=3
+        )
 
-        if not context_documents:
-            return "No relevant information was found in the uploaded resume."
+        if not results:
 
+            return {
+                "answer": "I couldn't find that information in the uploaded resume.",
+                "sources": []
+            }
+
+        # Build context for the LLM
         context = "\n\n--------------------\n\n".join(
             document.page_content
-            for document in context_documents
+            for document, score in results
         )
 
         prompt = ChatPromptTemplate.from_template(
@@ -60,4 +67,22 @@ Question:
             }
         )
 
-        return answer
+        # Prepare retrieval information
+        sources = []
+
+        for index, (document, score) in enumerate(results):
+
+            sources.append(
+                {
+                    "chunk": index + 1,
+                    "page": document.metadata.get("page", 0) + 1,
+                    "score": round(float(score), 4),
+                    "characters": len(document.page_content),
+                    "content": document.page_content[:250]
+                }
+            )
+
+        return {
+            "answer": answer,
+            "sources": sources
+        }

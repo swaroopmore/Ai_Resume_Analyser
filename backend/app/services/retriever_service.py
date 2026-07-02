@@ -4,16 +4,13 @@ from app.services.vector_store_service import VectorStoreService
 class RetrieverService:
 
     @staticmethod
-    def get_retriever():
+    def similarity_search(question: str, k: int = 3):
 
-        vector_store = VectorStoreService.get_vector_store()#this opens exixting Chroma Collection
+        vector_store = VectorStoreService.get_vector_store()
 
-
-        retriever = vector_store.as_retriever(
-            search_type="similarity",#Use Cosine Similarity to find the Closest Vector
-            search_kwargs={
-                "k": 3#Return only the 3 most relevant chunks
-            }
+        results = vector_store.similarity_search_with_score(
+            question,
+            k=k
         )
 
-        return retriever
+        return results

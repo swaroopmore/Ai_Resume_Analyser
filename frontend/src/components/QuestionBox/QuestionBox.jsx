@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { Sparkles } from "lucide-react";
+
 import API from "../../services/api";
+
 import AnswerCard from "../AnswerCard/AnswerCard";
 import Loader from "../Loader/Loader";
+import SuggestedQuestions from "../SuggestedQuestions/SuggestedQuestions";
+import RetrievalInspector from "../RetrievalInspector/RetrievalInspector";
+
 import "./QuestionBox.css";
-import SuggestedQuestions from "../SuggestedQuestions/SuggestedQuestions.jsx";
 
 export default function QuestionBox() {
 
     const [question, setQuestion] = useState("");
     const [answer, setAnswer] = useState("");
+    const [sources, setSources] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const askAI = async () => {
@@ -18,14 +23,19 @@ export default function QuestionBox() {
 
         setLoading(true);
         setAnswer("");
+        setSources([]);
 
         try {
 
-            const response = await API.post("/resume/ask", {
-                question: question,
-            });
+            const response = await API.post(
+                "/resume/ask",
+                {
+                    question
+                }
+            );
 
             setAnswer(response.data.answer);
+            setSources(response.data.sources);
 
         } catch (error) {
 
@@ -55,7 +65,7 @@ export default function QuestionBox() {
                     type="text"
                     placeholder="Example: Summarize my experience..."
                     value={question}
-                    onChange={(e)=>setQuestion(e.target.value)}
+                    onChange={(e) => setQuestion(e.target.value)}
                 />
 
                 <button onClick={askAI}>
@@ -67,17 +77,24 @@ export default function QuestionBox() {
                 </button>
 
             </div>
+
             <SuggestedQuestions
-    setQuestion={setQuestion}
-/>
+                setQuestion={setQuestion}
+            />
 
-            {loading && <Loader/>}
+            {loading && <Loader />}
 
-            {!loading && answer &&
+            {!loading && answer && (
 
-                <AnswerCard answer={answer}/>
+                <>
+                    <AnswerCard answer={answer} />
 
-            }
+                    <RetrievalInspector
+                        sources={sources}
+                    />
+                </>
+
+            )}
 
         </section>
 
